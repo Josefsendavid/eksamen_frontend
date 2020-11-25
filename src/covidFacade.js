@@ -12,14 +12,22 @@ function Facade() {
 
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
-
+        const [covidCountry, setCountry] = useState("")
+        const [covidConfirmed, setConfirmed] = useState("")
+        const [covidRecovered, setRecovered] = useState("")
+        const [covidPopulation, setPopulation] = useState("")
+    
         useEffect(() => {
           
          fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
             .then(res => res.json())
             .then(data => {
-               setCovid(data)
-                console.log(covid.All.confirmed)
+               setCountry(data.All.country)
+               setConfirmed(data.All.confirmed)
+               setRecovered(data.All.recovered)
+               setPopulation(data.All.population)
+
+              
             })
             const interval = setInterval(() => {
               fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
@@ -27,33 +35,47 @@ function Facade() {
               .then(data => {
                  setCovid(data)
             })
-            }, 20000)
+            }, 200000)
         
             return () => clearInterval(interval)
           }, []);
 
-        return (
+         return (
             <div>
-                <ul>{covid.All.country}</ul>
-                <ul>{covid.All.confirmed}</ul>
-                <ul>{covid.All.recovered}</ul>
-                <ul>{covid.All.deaths}</ul>
+                
+               <ul>{covidCountry}</ul>
+               <ul>Confirmed: {covidConfirmed}</ul>
+               <ul>Recovered: {covidRecovered}</ul>
+               <ul>Total population: {covidPopulation}</ul>
             </div>
-
         )
     }
 
     const GetWeather = () => {
         const [weather, setWeather] = useState([]);
-        fetch(weatherURL, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-            .then(res => res.json())
-            .then(data => {
+
+        useEffect(() => {
+          
+            fetch(weatherURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+               .then(res => res.json())
+               .then(data => {
                 setWeather(data)
-            })
+                  
+               })
+               const interval = setInterval(() => {
+                 fetch(weatherURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                 .then(res => res.json())
+                 .then(data => {
+                    setWeather(data)
+               })
+               }, 200000)
+           
+               return () => clearInterval(interval)
+             }, []);
+
 
         return (
           <div>
-           
             <ul>Visibility: {weather.visibility}</ul>
           </div>
         );
@@ -61,11 +83,25 @@ function Facade() {
 
     const GetCountry = () => {
         const [country, setCountry] = useState([]);
-        fetch(countryURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-            .then(res => res.json())
-            .then(data => {
+
+        useEffect(() => {
+          
+            fetch(countryURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+               .then(res => res.json())
+               .then(data => {
                 setCountry(data)
-            })
+                  
+               })
+               const interval = setInterval(() => {
+                 fetch(countryURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                 .then(res => res.json())
+                 .then(data => {
+                    setCountry(data)
+               })
+               }, 200000)
+           
+               return () => clearInterval(interval)
+             }, []);
 
         return (
             <div>
