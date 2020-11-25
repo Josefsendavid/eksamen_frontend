@@ -22,12 +22,7 @@ function Facade() {
          fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
             .then(res => res.json())
             .then(data => {
-               setCountry(data.All.country)
-               setConfirmed(data.All.confirmed)
-               setRecovered(data.All.recovered)
-               setPopulation(data.All.population)
-
-              
+               setCovid(data.All)
             })
             const interval = setInterval(() => {
               fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
@@ -43,10 +38,10 @@ function Facade() {
          return (
             <div>
                 
-               <ul>{covidCountry}</ul>
-               <ul>Confirmed: {covidConfirmed}</ul>
-               <ul>Recovered: {covidRecovered}</ul>
-               <ul>Total population: {covidPopulation}</ul>
+               <ul>{covid.country}</ul>
+               <ul>Confirmed: {covid.confirmed}</ul>
+               <ul>Recovered: {covid.recovered}</ul>
+               <ul>Total population: {covid.population}</ul>
             </div>
         )
     }
