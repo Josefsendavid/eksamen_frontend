@@ -12,17 +12,32 @@ function Facade() {
 
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
-        fetch(covidURL, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+
+        useEffect(() => {
+          
+         fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
             .then(res => res.json())
             .then(data => {
-                setCovid(data)
+               setCovid(data)
+                console.log(covid.All.confirmed)
             })
+            const interval = setInterval(() => {
+              fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+              .then(res => res.json())
+              .then(data => {
+                 setCovid(data)
+            })
+            }, 20000)
+        
+            return () => clearInterval(interval)
+          }, []);
 
         return (
             <div>
-                <ul>
-                    <li>{covid}</li>
-                </ul>
+                <ul>{covid.All.country}</ul>
+                <ul>{covid.All.confirmed}</ul>
+                <ul>{covid.All.recovered}</ul>
+                <ul>{covid.All.deaths}</ul>
             </div>
 
         )
@@ -37,13 +52,11 @@ function Facade() {
             })
 
         return (
-            <div>
-                <ul>
-                    <li>{weather.timezone}</li>
-                </ul>
-            </div>
-
-        )
+          <div>
+           
+            <ul>Visibility: {weather.visibility}</ul>
+          </div>
+        );
     }
 
     const GetCountry = () => {
@@ -56,12 +69,9 @@ function Facade() {
 
         return (
             <div>
-                <ul>
-                    {country.map(data => {
-                        <li>{data.capital}</li>
-                    })}
-                    <li>{country.capital}</li>
-                </ul>
+                <ul>  {country.name}</ul>
+                <ul>  {country.capital}</ul>
+                <ul>  {country.region}</ul>
             </div>
 
         )

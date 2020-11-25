@@ -185,9 +185,6 @@ function App(props) {
   const [errorMessage, setErrorMessage] = useState("")
 
 
-
-
-
   const logout = () => {
     facade.logout()
     setLoggedIn(false)
