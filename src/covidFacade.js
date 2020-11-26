@@ -12,6 +12,17 @@ function Facade() {
 
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
+        const [covidWriteValue, setCovidWriteValue] = useState("");
+
+        function handleClick(e) {
+            setCovidWriteValue(e)
+            console.log(covidWriteValue)
+            fetch(covidURL + covidWriteValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                .then(res => res.json())
+                .then(data => {
+                    setCovid(data)
+                })
+        }
 
         useEffect(() => {
 
@@ -33,6 +44,8 @@ function Facade() {
 
         return (
             <div>
+                <input type="text" id="myInput" placeholder="Insert Country" value={covidWriteValue} onChange={(event) => setCovidWriteValue(event.target.value)} />
+                <button onClick={() => handleClick(covidWriteValue)}>Find Country</button>
                 <ul>
                     <h4>{covid.country}</h4>
                     <li>Confirmed: {covid.confirmed}</li>
@@ -46,17 +59,28 @@ function Facade() {
 
     const GetWeather = () => {
         const [weather, setWeather] = useState([]);
+        const [weatherWriteValue, setWeatherWriteValue] = useState("");
+
+        function handleClick(e) {
+            setWeatherWriteValue(e)
+            console.log(weatherWriteValue)
+            fetch(weatherURL + weatherWriteValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                .then(res => res.json())
+                .then(data => {
+                    setWeather(data)
+                })
+        }
 
         useEffect(() => {
 
-            fetch(weatherURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+            fetch(weatherURL + "copenhagen", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                 .then(res => res.json())
                 .then(data => {
                     setWeather(data)
                     console.log(data)
                 })
             const interval = setInterval(() => {
-                fetch(weatherURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                fetch(weatherURL + weatherWriteValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                     .then(res => res.json())
                     .then(data => {
                         setWeather(data)
@@ -69,7 +93,10 @@ function Facade() {
         if (weather.main) {
             return (
                 <div>
+                    <input type="text" id="myInput" placeholder="Insert capital" value={weatherWriteValue} onChange={(event) => setWeatherWriteValue(event.target.value)} />
+                    <button onClick={() => handleClick(weatherWriteValue)}>See weather</button>
                     <ul>
+                        <h4>{weatherWriteValue}</h4>
                         <li>Base: {weather.base}</li>
                         <li>Visibility: {weather.visibility}</li>
                         <li>Clouds: {weather.weather[0].description}</li>
@@ -89,10 +116,16 @@ function Facade() {
         const [country, setCountry] = useState([]);
         const [writeValue, setWriteValue] = useState("");
 
-        function change(event) {
-            setWriteValue(event.target.value)
-        }
+        function handleClick(e) {
+            setWriteValue(e)
+            console.log(writeValue)
+            fetch(countryURL + writeValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                .then(res => res.json())
+                .then(data => {
+                    setCountry(data)
+                })
 
+        }
         useEffect(() => {
 
             fetch(countryURL + writeValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
@@ -101,23 +134,13 @@ function Facade() {
                     setCountry(data)
 
                 })
-            const interval = setInterval(() => {
-                fetch(countryURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-                    .then(res => res.json())
-                    .then(data => {
-                        setCountry(data)
-                    })
-            }, 200000)
-
-            return () => clearInterval(interval)
         }, []);
 
         return (
             <div>
-                <input type="text" id="myInput" placeholder="Insert here" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
-                <button onClick={() => setCountry(writeValue)}>Click to increase</button>
+                <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
+                <button onClick={() => handleClick(writeValue)}>Find Country</button>
                 <ul>
-                    {writeValue}
                     <h4>{country.name}</h4>
                     <li>Capital: {country.capital}</li>
                     <li>Domain: {country.topLevelDomain}</li>
