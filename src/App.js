@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import facade from "./apiFacade";
+import { ReactComponent as Logo } from './simple.svg';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import './final.css';
 import './App.css';
@@ -74,7 +75,9 @@ function Home() {
   return (
     <div>
       <h2>Home</h2>
+      <Logo />
     </div>
+    
   );
 }
 

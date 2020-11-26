@@ -12,10 +12,6 @@ function Facade() {
 
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
-        const [covidCountry, setCountry] = useState("")
-        const [covidConfirmed, setConfirmed] = useState("")
-        const [covidRecovered, setRecovered] = useState("")
-        const [covidPopulation, setPopulation] = useState("")
     
         useEffect(() => {
           
@@ -37,7 +33,6 @@ function Facade() {
 
          return (
             <div>
-                
                <ul>{covid.country}</ul>
                <ul>Confirmed: {covid.confirmed}</ul>
                <ul>Recovered: {covid.recovered}</ul>
@@ -55,7 +50,7 @@ function Facade() {
                .then(res => res.json())
                .then(data => {
                 setWeather(data)
-                  
+                  console.log(data)
                })
                const interval = setInterval(() => {
                  fetch(weatherURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
@@ -67,13 +62,17 @@ function Facade() {
            
                return () => clearInterval(interval)
              }, []);
-
-
+       
+        if(weather.weather){
         return (
           <div>
             <ul>Visibility: {weather.visibility}</ul>
+            <ul>Base: {weather.base}</ul>
+            <ul>Clouds: {weather.weather[0].main}</ul>
           </div>
-        );
+          
+        );}
+        return (<div>Waiting for data...</div>);
     }
 
     const GetCountry = () => {
