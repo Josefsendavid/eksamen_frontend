@@ -100,8 +100,7 @@ function Weather() {
 }
 
 function Country() {
-  let countryData = [];
-  countryData = covidFacade.GetCountry();
+  let countryData = covidFacade.GetCountry();
   return (
     <div> 
       <li>{countryData}</li>
