@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 import facade from "./apiFacade";
-import { ReactComponent as Logo } from './simple.svg';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import './final.css';
 import './App.css';
+import { WorldMap } from "react-svg-worldmap"
 import {
   BrowserRouter as Router,
   Switch,
@@ -72,10 +72,68 @@ const Header = ({ loggedIn }) => {
 }
 
 function Home() {
+  const [currentCountry, setCurrentCountry] = useState("Waiting for data...")
+
+  const data =
+    [
+      { country: "cn", value: 86490 }, // china
+      { country: "in", value: 9266705 }, // india
+      { country: "us", value: 13139882 },  // united states
+      { country: "id", value: 2649358 },  // indonesia
+      { country: "pk", value: 2107978 },  // pakistan
+      { country: "br", value: 6166898 },  // brazil
+      { country: "ng", value: 2082262 },  // nigeria
+      { country: "bd", value: 161061 },  // bangladesh
+      { country: "ru", value: 2187990 },  // russia
+      { country: "mx", value: 1070487 },  // mexico
+      { country: "dk", value: 3115 },   // denmark
+      { country: "gl", value: 17 },   // denmark
+      { country: "de", value: 996000 },  // bangladesh
+    ]
+
+    const stylingFunction = (context) => {
+      const opacityLevel = 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
+      
+      return {
+        fill: context.country === "US" ? "#235f17" : context.color 
+        && context.country === "IN" ? "#235f16" : context.color
+        && context.country === "CN" ? "#235f15" : context.color
+        && context.country === "ID" ? "#235f14" : context.color
+        && context.country === "PK" ? "#235f13" : context.color
+        && context.country === "NG" ? "#235f12" : context.color
+        && context.country === "RU" ? "#235f11" : context.color
+        && context.country === "DK" ? "#235f10" : context.color
+        && context.country === "BR" ? "#235f13" : context.color
+        && context.country === "BR" ? "#235f13" : context.color
+        && context.country === "BR" ? "#235f13" : context.color
+        ,
+        fillOpacity: opacityLevel, 
+        stroke: "green", 
+        strokeWidth: 1, 
+        strokeOpacity: 0.3, 
+        cursor: "pointer" 
+           }
+    }
+    
   return (
     <div>
-      <h2>Home</h2>
-      <Logo />
+       <div className="Main">
+         <div>{currentCountry}</div>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <div className="row" onClick={e => 
+                {console.log(e.target.style.fill)
+                 setCurrentCountry(e.target.style.fill) }}>
+                   
+                <WorldMap color={"black"}  tooltipBgColor={"#D3D3D3"}  valueSuffix="cases" size="xl" data={data}  styleFunction={stylingFunction}/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     
   );
