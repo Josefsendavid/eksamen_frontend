@@ -13,14 +13,18 @@ function Facade() {
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
         const [covidWriteValue, setCovidWriteValue] = useState("");
+        let countrySearch = covidWriteValue.charAt(0).toUpperCase() + covidWriteValue.slice(1);
 
         function handleClick(e) {
             setCovidWriteValue(e)
-            console.log(covidWriteValue)
-            fetch(covidURL + covidWriteValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+            fetch(covidURL + countrySearch, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                 .then(res => res.json())
                 .then(data => {
-                    setCovid(data)
+                    if (data != undefined) {
+                        setCovid(data.All)
+                    }
+                }).catch(function () {
+                    alert("Unknown Country")
                 })
         }
 
@@ -41,20 +45,28 @@ function Facade() {
 
             return () => clearInterval(interval)
         }, []);
-
-        return (
-            <div>
+        if (covid !== undefined) {
+            return (
+                <div>
+                    <input type="text" id="myInput" placeholder="Insert Country" value={covidWriteValue} onChange={(event) => setCovidWriteValue(event.target.value)} />
+                    <button onClick={() => handleClick(covidWriteValue)}>Find Country</button>
+                    <ul>
+                        <h4>{covid.country}</h4>
+                        <li>Confirmed: {covid.confirmed}</li>
+                        <li>Recovered: {covid.recovered}</li>
+                        <li>Deaths: {covid.deaths}</li>
+                        <li>Total population: {covid.population}</li>
+                    </ul>
+                </div>
+            )
+        } else {
+            return <div>
                 <input type="text" id="myInput" placeholder="Insert Country" value={covidWriteValue} onChange={(event) => setCovidWriteValue(event.target.value)} />
                 <button onClick={() => handleClick(covidWriteValue)}>Find Country</button>
-                <ul>
-                    <h4>{covid.country}</h4>
-                    <li>Confirmed: {covid.confirmed}</li>
-                    <li>Recovered: {covid.recovered}</li>
-                    <li>Deaths: {covid.deaths}</li>
-                    <li>Total population: {covid.population}</li>
-                </ul>
+                <p>Unknown Country.. </p>
             </div>
-        )
+
+        }
     }
 
     const GetWeather = () => {
@@ -96,7 +108,7 @@ function Facade() {
                     <input type="text" id="myInput" placeholder="Insert capital" value={weatherWriteValue} onChange={(event) => setWeatherWriteValue(event.target.value)} />
                     <button onClick={() => handleClick(weatherWriteValue)}>See weather</button>
                     <ul>
-                        <h4>{weatherWriteValue}</h4>
+                        <h4>Capital: {weatherWriteValue}</h4>
                         <li>Base: {weather.base}</li>
                         <li>Visibility: {weather.visibility}</li>
                         <li>Clouds: {weather.weather[0].description}</li>
@@ -128,7 +140,7 @@ function Facade() {
         }
         useEffect(() => {
 
-            fetch(countryURL + writeValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+            fetch(countryURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                 .then(res => res.json())
                 .then(data => {
                     setCountry(data)
