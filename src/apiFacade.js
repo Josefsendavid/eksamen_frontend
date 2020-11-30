@@ -6,7 +6,9 @@ function handleHttpErrors(res) {
  }
  return res.json();
 }
- 
+
+
+
 function apiFacade() {
  /* Insert utility-methods from a latter step (d) here (REMEMBER to uncomment in the returned object when you do)*/
 

@@ -156,7 +156,6 @@ function Facade() {
                     <ul>
                         <h4>Capital: {weatherWriteValue}</h4>
                         <li>Base: {weather.base}</li>
-                        <li>Visibility: {weather.visibility}</li>
                         <li>Clouds: {weather.weather[0].description}</li>
                         <li>Temperature: {weather.main.temp}</li>
                         <li>Temperature feels like: {weather.main.feels_like}</li>
@@ -167,7 +166,11 @@ function Facade() {
 
             );
         }
-        return (<div>Waiting for data...</div>);
+        return (<div>
+            <input type="text" id="myInput" placeholder="Insert Country" value={weatherWriteValue} onChange={(event) => setWeatherWriteValue(event.target.value)} />
+            <button onClick={() => handleClick(weatherWriteValue)}>See weather</button>
+            <p>Unknown capital...</p>
+        </div>);
     }
 
     const GetCountry = () => {
@@ -178,8 +181,9 @@ function Facade() {
             setWriteValue(e)
             console.log(writeValue)
             fetch(countryURL + writeValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-                .then(res => res.json())
+                .then(res => res.json())                    
                 .then(data => {
+                    console.log(data)
                     setCountry(data)
                 })
 
@@ -193,7 +197,7 @@ function Facade() {
 
                 })
         }, []);
-
+        if(country.name !== undefined) {
         return (
             <div>
                 <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
@@ -209,7 +213,15 @@ function Facade() {
                 </ul>
             </div>
 
-        )
+        )} else {
+            return <div>
+                <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
+                <button onClick={() => handleClick(writeValue)}>Find Country</button>
+                <p>Unknown Country.. </p>
+            </div>
+
+        }
+
     }
     return {
         GetCovid,
