@@ -72,7 +72,15 @@ const Header = ({ loggedIn }) => {
 }
 
 function Home() {
-  const [currentCountry, setCurrentCountry] = useState("Waiting for data...")
+  const [currentCountry, setCurrentCountry] = useState("")
+
+  useEffect(() => {
+  });
+
+  function stringTry(){
+    let str = '{\"Afghanistan\": {\"All\": {\"confirmed\": 46215, \"recovered\": 36731, \"deaths\": 1763, \"country\": \"Afghanistan\", \"population\": 35530081, \"sq_km_area\": '
+    let loc = str.search("Afghanistan")
+  }
 
   const data =
     [
@@ -85,15 +93,16 @@ function Home() {
       { country: "ng", value: 2082262 },  // nigeria
       { country: "bd", value: 161061 },  // bangladesh
       { country: "ru", value: 2187990 },  // russia
-      { country: "mx", value: 1070487 },  // mexico
+      { country: "mx", value: 1170487 },  // mexico
       { country: "dk", value: 3115 },   // denmark
-      { country: "gl", value: 17 },   // denmark
-      { country: "de", value: 996000 },  // bangladesh
+      { country: "gl", value: 17 },   // greenland
+      { country: "de", value: 996000 },  // germany
+      { country: "ca", value: 306000 },  // canada
     ]
 
     const stylingFunction = (context) => {
       const opacityLevel = 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
-      
+
       return {
         fill: context.country === "US" ? "#235f17" : context.color 
         && context.country === "IN" ? "#235f16" : context.color
@@ -102,32 +111,52 @@ function Home() {
         && context.country === "PK" ? "#235f13" : context.color
         && context.country === "NG" ? "#235f12" : context.color
         && context.country === "RU" ? "#235f11" : context.color
-        && context.country === "DK" ? "#235f10" : context.color
-        && context.country === "BR" ? "#235f13" : context.color
-        && context.country === "BR" ? "#235f13" : context.color
-        && context.country === "BR" ? "#235f13" : context.color
-        ,
+        && context.country === "DK" ? "#235f09" : context.color
+        && context.country === "CA" ? "#235f08" : context.color
+        && context.country === "MX" ? "#235f07" : context.color
+        && context.country === "GL" ? "#235f06" : context.color
+        && context.country === "DE" ? "#235f05" : context.color
+        && context.country === "BR" ? "#235f04" : context.color,
+        
         fillOpacity: opacityLevel, 
         stroke: "green", 
         strokeWidth: 1, 
-        strokeOpacity: 0.3, 
+        strokeOpacity: 0.5, 
         cursor: "pointer" 
            }
     }
     
   return (
     <div>
-       <div className="Main">
-         <div>{currentCountry}</div>
+      <div className="Main">
         <table>
           <tbody>
             <tr>
               <td>
-                <div className="row" onClick={e => 
-                {console.log(e.target.style.fill)
-                 setCurrentCountry(e.target.style.fill) }}>
-                   
-                <WorldMap color={"black"}  tooltipBgColor={"#D3D3D3"}  valueSuffix="cases" size="xl" data={data}  styleFunction={stylingFunction}/>
+                <div
+                  className="row"
+                  onClick={(e) => {
+                    setCurrentCountry("");
+                    setCurrentCountry(e.target.style.fill);
+                    console.log(currentCountry)
+                  }}
+                >
+                  <WorldMap
+                    color={"black"}
+                    tooltipBgColor={"#D3D3D3"}
+                    valueSuffix="cases"
+                    size="xl"
+                    data={data}
+                    styleFunction={stylingFunction}
+                  />
+
+                  {!currentCountry ? (
+                    <div></div>
+                  ) : (
+                    <div>
+                      <GetCovidByCountry country = {currentCountry}/>
+                    </div>
+                  )}
                 </div>
               </td>
             </tr>
@@ -135,15 +164,50 @@ function Home() {
         </table>
       </div>
     </div>
-    
   );
+}
+
+function GetCovidByCountry(props) {
+       
+  let countryFor;
+  if(props.country === "rgb(35, 95, 22)"){
+      countryFor = "India";
+  }
+  if(props.country === "rgb(35, 95, 4)"){
+      countryFor = "Brazil";
+  } 
+  
+  let [covid, setCovid] = useState([]);
+  
+  useEffect(() => {
+      if(countryFor){
+      fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } })
+          .then(res => res.json())
+          .then(data => {
+              setCovid(data.All)
+          })
+      }
+
+  }, []);
+
+  return (
+      <div>
+          <ul>
+              <h4>{covid.country}</h4>
+              <li>Confirmed: {covid.confirmed}</li>
+              <li>Recovered: {covid.recovered}</li>
+              <li>Deaths: {covid.deaths}</li>
+              <li>Total population: {covid.population}</li>
+          </ul>
+      </div>
+  )
 }
 
 function Covid() {
   let covidData = covidFacade.GetCovid();
   return (
     <div>
-      <li>{covidData}</li>
+      {covidData}
     </div>
   )
 }
@@ -152,7 +216,7 @@ function Weather() {
   let weatherData = covidFacade.GetWeather();
   return (
     <div>
-      <li>{weatherData}</li>
+      {weatherData}
     </div>
   )
 }
@@ -161,7 +225,7 @@ function Country() {
   let countryData = covidFacade.GetCountry();
   return (
     <div> 
-      <li>{countryData}</li>
+      {countryData}
     </div>
   )
 }

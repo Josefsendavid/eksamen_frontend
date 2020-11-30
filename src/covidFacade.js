@@ -12,6 +12,7 @@ function Facade() {
 
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
+        const [covidTest, setCovidTest] = useState([]);
         const [covidWriteValue, setCovidWriteValue] = useState("");
         let countrySearch = covidWriteValue.charAt(0).toUpperCase() + covidWriteValue.slice(1);
 
@@ -20,26 +21,30 @@ function Facade() {
             fetch(covidURL + countrySearch, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                 .then(res => res.json())
                 .then(data => {
-                    if (data != undefined) {
-                        setCovid(data.All)
-                    }
-                }).catch(function () {
-                    alert("Unknown Country")
+                    setCovid(data.All)
                 })
         }
 
         useEffect(() => {
+
+            fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+            .then(res => res.json())
+            .then(data => {
+                setCovidTest(data)
+                console.log(data)
+            })
 
             fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                 .then(res => res.json())
                 .then(data => {
                     setCovid(data.All)
                 })
+
             const interval = setInterval(() => {
                 fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                     .then(res => res.json())
                     .then(data => {
-                        setCovid(data)
+                        setCovid(data.All)
                     })
             }, 200000)
 
@@ -56,6 +61,7 @@ function Facade() {
                         <li>Recovered: {covid.recovered}</li>
                         <li>Deaths: {covid.deaths}</li>
                         <li>Total population: {covid.population}</li>
+
                     </ul>
                 </div>
             )
@@ -67,6 +73,46 @@ function Facade() {
             </div>
 
         }
+    }
+
+    function GetCovidByCountry(props) {
+       
+        let countryFor;
+        if(props.country === "rgb(35, 95, 22)"){
+            countryFor = "India";
+        }
+        if(props.country === "rgb(35, 95, 19)"){
+            countryFor = "Brazil";
+        } 
+        
+        let [covid, setCovid] = useState([]);
+        
+        useEffect(() => {
+            if(countryFor){
+            fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                .then(res => res.json())
+                .then(data => {
+                    setCovid(data.All)
+                    console.log("was inside")
+                })
+           
+            }
+
+        }, []);
+
+        return (
+            <div>
+                <ul>
+                    <h4>{covid.country}</h4>
+                    <li>Confirmed: {covid.confirmed}</li>
+                    <li>Recovered: {covid.recovered}</li>
+                    <li>Deaths: {covid.deaths}</li>
+                    <li>Total population: {covid.population}</li>
+
+                    {countryFor}
+                </ul>
+            </div>
+        )
     }
 
     const GetWeather = () => {
@@ -167,6 +213,7 @@ function Facade() {
     }
     return {
         GetCovid,
+        GetCovidByCountry,
         GetWeather,
         GetCountry
     }
