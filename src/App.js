@@ -74,6 +74,7 @@ const Header = ({ loggedIn }) => {
 
 function Home() {
   const [currentCountry, setCurrentCountry] = useState("")
+  const history = useHistory();
 
   useEffect(() => {
   });
@@ -308,13 +309,14 @@ function LoggedIn() {
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
-  let history = useHistory();
+  const history = useHistory();
 
 
   const logout = () => {
     facade.logout()
     setLoggedIn(false)
-    history.push("/");
+    history.push("/")
+    history.go(0);
   }
   const login = (user, pass) => {
     facade.login(user, pass)
@@ -359,7 +361,16 @@ function App(props) {
     </div>
 
   )
-
+  //if ({loggedIn}) {
+  // return (
+  //  <div class="header">
+  //  <Router>
+  //  <Header/>
+  //  <Content />
+  //  </Router>
+  //  </div>
+  // )
+  //  }
 
 }
 

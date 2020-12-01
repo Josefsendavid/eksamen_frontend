@@ -192,12 +192,11 @@ function Facade() {
                     <button onClick={() => handleClick(weatherWriteValue)}>See weather</button>
                     <ul>
                         <h4>Capital: {weatherWriteValue}</h4>
-                        <li>Base: {weather.base}</li>
                         <li>Clouds: {weather.weather[0].description}</li>
-                        <li>Temperature: {weather.main.temp}</li>
-                        <li>Temperature feels like: {weather.main.feels_like}</li>
-                        <li>Temperature min: {weather.main.temp_min}</li>
-                        <li>Temperature max: {weather.main.temp_max}</li>
+                        <li>Temperature: {Math.round(weather.main.temp)}</li>
+                        <li>Temperature feels like: {Math.round(weather.main.feels_like)}</li>
+                        <li>Temperature min: {Math.round(weather.main.temp_min)}</li>
+                        <li>Temperature max: {Math.round(weather.main.temp_max)}</li>
                     </ul>
                 </div>
 
