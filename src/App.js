@@ -23,7 +23,7 @@ const Content = (props) => {
       <div className="content">
         <Switch>
           <Route exact path="/">
-            <Home />
+            <HomeWrapper />
           </Route>
           <Route path="/weather">
             <Weather />
@@ -72,41 +72,73 @@ const Header = ({ loggedIn }) => {
   );
 }
 
-function Home() {
-  const [currentCountry, setCurrentCountry] = useState("")
-  const history = useHistory();
+function HomeWrapper(){
+  const [covidArray, setCovidArray] = useState(undefined)
 
   useEffect(() => {
-  });
+    fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } })
+    .then(res => res.json())
+    .then(data => {
+        setCovidArray(data)
+    })
 
-  function stringTry(){
-    let str = '{\"Afghanistan\": {\"All\": {\"confirmed\": 46215, \"recovered\": 36731, \"deaths\": 1763, \"country\": \"Afghanistan\", \"population\": 35530081, \"sq_km_area\": '
-    let loc = str.search("Afghanistan")
-  }
+    const interval = setInterval(() => {
+        fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } })
+            .then(res => res.json())
+            .then(data => {
+                setCovidArray(data)
+            })
+    }, 200000)
 
-  const data =
-    [
-      { country: "cn", value: 86490 }, // china
-      { country: "in", value: 9266705 }, // india
-      { country: "us", value: 13139882 },  // united states
-      { country: "id", value: 2649358 },  // indonesia
-      { country: "pk", value: 2107978 },  // pakistan
-      { country: "br", value: 6166898 },  // brazil
-      { country: "ng", value: 2082262 },  // nigeria
-      { country: "bd", value: 161061 },  // bangladesh
-      { country: "ru", value: 2187990 },  // russia
-      { country: "mx", value: 1170487 },  // mexico
-      { country: "dk", value: 3115 },   // denmark
-      { country: "gl", value: 17 },   // greenland
-      { country: "de", value: 996000 },  // germany
-      { country: "ca", value: 306000 },  // canada
-    ]
+    return () => clearInterval(interval)
+}, []);
+    
+    return (
+     <div>
+    { !covidArray ? (
+      <div><h2>Loading...</h2></div>
+    ) : (
+      
+      <div>
+        <Home covidArray = {covidArray}/>
+      </div>
+    )}
+  </div>);
+}
+
+function Home(props) {
+  const [currentCountry, setCurrentCountry] = useState("")
+  const history = useHistory();
+ 
+  useEffect(() => {
+}, []);
+
+  
+  //const data =
+   // [
+     // { country: "cn", value: 86490 }, // china
+     // { country: "in", value: 9266705 }, // india
+     // { country: "us", value: 13139882 },  // united states
+  //  ]
+
+    let data = []
+    let arr = props.covidArray.Countries;
+    for (let i = 0; i < arr.length; i++) {
+      let temp = {country: arr[i].CountryCode.toLowerCase(), value: arr[i].TotalConfirmed}
+      data.push(temp)
+    }
+    data.push({country: "gl", value: 17})
+    
+    const covidarr = arr.map((country) => <li>
+      {country.Country}: {country.TotalConfirmed}
+    </li>)
 
     const stylingFunction = (context) => {
       const opacityLevel = 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
 
       return {
-        fill: context.country === "US" ? "#235f17" : context.color 
+        fill: 
+        context.country === "US" ? "#235f17" : context.color 
         && context.country === "IN" ? "#235f16" : context.color
         && context.country === "CN" ? "#235f15" : context.color
         && context.country === "ID" ? "#235f14" : context.color
@@ -118,16 +150,48 @@ function Home() {
         && context.country === "MX" ? "#235f07" : context.color
         && context.country === "GL" ? "#235f06" : context.color
         && context.country === "DE" ? "#235f05" : context.color
+
+        && context.country === "AF" ? "#235f05" : context.color
+        && context.country === "AL" ? "#235f05" : context.color
+        && context.country === "DZ" ? "#235f05" : context.color
+        && context.country === "AD" ? "#235f05" : context.color
+        && context.country === "AO" ? "#235f05" : context.color
+        && context.country === "AG" ? "#235f05" : context.color
+        && context.country === "AR" ? "#235f05" : context.color
+        && context.country === "AM" ? "#235f05" : context.color
+        && context.country === "AU" ? "#235f05" : context.color
+        && context.country === "AT" ? "#235f05" : context.color
+        && context.country === "AZ" ? "#235f05" : context.color
+        && context.country === "BS" ? "#235f05" : context.color
+        && context.country === "BH" ? "#235f05" : context.color
+        && context.country === "BD" ? "#235f05" : context.color
+        && context.country === "BB" ? "#235f05" : context.color
+        && context.country === "BY" ? "#235f05" : context.color
+        && context.country === "BE" ? "#235f05" : context.color
+        && context.country === "BZ" ? "#235f05" : context.color
+        && context.country === "BJ" ? "#235f05" : context.color
+        && context.country === "BT" ? "#235f05" : context.color
+        && context.country === "BO" ? "#235f05" : context.color
+        && context.country === "BA" ? "#235f05" : context.color
+        && context.country === "BW" ? "#235f05" : context.color
+        && context.country === "BN" ? "#235f05" : context.color
+        && context.country === "BG" ? "#235f05" : context.color
+        && context.country === "BF" ? "#235f05" : context.color
+        && context.country === "BI" ? "#235f05" : context.color
+        && context.country === "KH" ? "#235f05" : context.color
+        && context.country === "CM" ? "#235f05" : context.color
+        && context.country === "CA" ? "#235f05" : context.color
+        && context.country === "CV" ? "#235f05" : context.color
         && context.country === "BR" ? "#235f04" : context.color,
         
         fillOpacity: opacityLevel, 
-        stroke: "green", 
+        stroke: "grey", 
         strokeWidth: 1, 
         strokeOpacity: 0.5, 
         cursor: "pointer" 
            }
     }
-    
+
   return (
     <div>
       <div className="Main">
@@ -141,8 +205,10 @@ function Home() {
                     setCurrentCountry("");
                     setCurrentCountry(e.target.style.fill);
                     console.log(currentCountry)
+                    console.log(e.target)
                   }}
                 >
+                  <div class="fadeIn first">
                   <WorldMap
                     color={"black"}
                     tooltipBgColor={"#D3D3D3"}
@@ -151,12 +217,14 @@ function Home() {
                     data={data}
                     styleFunction={stylingFunction}
                   />
-
+                  </div>
                   {!currentCountry ? (
                     <div></div>
                   ) : (
                     <div>
                       <GetCovidByCountry country = {currentCountry}/>
+                      {props.covidArray.Countries[0].Country}
+                      {covidarr}
                     </div>
                   )}
                 </div>
@@ -193,7 +261,7 @@ function GetCovidByCountry(props) {
   }, []);
 
   return (
-      <div>
+      <div class="fadeIn first">
           <ul>
               <h4>{covid.country}</h4>
               <li>Confirmed: {covid.confirmed}</li>
@@ -243,9 +311,6 @@ const NoMatch = () => {
     </div>
   )
 }
-
-
-
 
 
 function LogIn({ login }) {

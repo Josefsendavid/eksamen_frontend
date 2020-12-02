@@ -19,7 +19,7 @@ function Facade() {
             .then(res => res.json())
             .then(data => {
                 setCovid(data)
-                console.log(data)
+                console.log("TEST")
             })
 
             const interval = setInterval(() => {
@@ -49,7 +49,7 @@ function Facade() {
 
     const GetCovid = () => {
         const [covid, setCovid] = useState([]);
-        const [covidTest, setCovidTest] = useState([]);
+        const [covidTest, setCovidTest] = useState({});
         const [covidWriteValue, setCovidWriteValue] = useState("");
         let countrySearch = covidWriteValue.charAt(0).toUpperCase() + covidWriteValue.slice(1);
 
@@ -68,9 +68,7 @@ function Facade() {
             .then(res => res.json())
             .then(data => {
                 setCovidTest(data)
-                console.log(data)
-                console.log("-------------")
-                console.log(covidTest)
+                
             })
 
             fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
@@ -101,6 +99,10 @@ function Facade() {
                         <li>Deaths: {covid.deaths}</li>
                         <li>Total population: {covid.population}</li>
                     </ul>
+
+                    <div>
+                      
+                    </div>
                 </div>
             )
         } else {
