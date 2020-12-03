@@ -10,41 +10,50 @@ function handleHttpErrors(res) {
 
 function Facade() {
 
-    const GetCovidCountries = () => {
-        const [covid, setCovid] = useState([]);
+    const GetTopCovid = () => {
+        const [covidTop3, setCovidTop3] = useState([]);
+        let temp = []
+        function compareNumbers(a, b) {
+            return b.TotalConfirmed - a.TotalConfirmed;
+        }
 
         useEffect(() => {
+            fetch(covidURL + "all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                .then(res => res.json())
+                .then(data => {
+                    temp = data.Countries;
+                    let tempSorted = temp.sort(compareNumbers)
+                    setCovidTop3(tempSorted)
+                    console.log(covidTop3[0])
 
-            fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-            .then(res => res.json())
-            .then(data => {
-                setCovid(data)
-                console.log("TEST")
-            })
-
+                })
             const interval = setInterval(() => {
-                fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                fetch(covidURL + "all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                     .then(res => res.json())
                     .then(data => {
-                        setCovid(data)
+                        temp = data.Countries;
+                        let tempSorted = temp.sort(compareNumbers)
+                        setCovidTop3(tempSorted)
+                        console.log(covidTop3[0])
                     })
             }, 200000)
 
             return () => clearInterval(interval)
         }, []);
-
-        if (covid !== undefined) {
+        if (covidTop3.Country !== undefined) {
             return (
                 <div>
-                   actually returned
+                    <h4>Top 3</h4>
+                    <ul>
+                        <li>{covidTop3[0]}</li>
+                    </ul>
                 </div>
             )
-        } else {
-            return <div>
-                <p>Error</p>
-            </div>
-
         }
+        return (
+            <p>Waiting for data...</p>
+        )
+
     }
 
     const GetCovid = () => {
@@ -52,6 +61,8 @@ function Facade() {
         const [covidTest, setCovidTest] = useState({});
         const [covidWriteValue, setCovidWriteValue] = useState("");
         let countrySearch = covidWriteValue.charAt(0).toUpperCase() + covidWriteValue.slice(1);
+
+
 
         function handleClick(e) {
             setCovidWriteValue(e)
@@ -64,12 +75,12 @@ function Facade() {
 
         useEffect(() => {
 
-            fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-            .then(res => res.json())
-            .then(data => {
-                setCovidTest(data)
-                
-            })
+            fetch("https://www.josefsendavid.dk/eksamensys/api/covid/all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                .then(res => res.json())
+                .then(data => {
+                    setCovidTest(data)
+
+                })
 
             fetch(covidURL + "Denmark", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
                 .then(res => res.json())
@@ -98,10 +109,13 @@ function Facade() {
                         <li>Recovered: {covid.recovered}</li>
                         <li>Deaths: {covid.deaths}</li>
                         <li>Total population: {covid.population}</li>
+                        <br />
+                        <br />
+                        <h4>Countries with highest confirmed:</h4>
                     </ul>
 
                     <div>
-                      
+
                     </div>
                 </div>
             )
@@ -116,25 +130,25 @@ function Facade() {
     }
 
     function GetCovidByCountry(props) {
-       
+
         let countryFor;
-        if(props.country === "rgb(35, 95, 22)"){
+        if (props.country === "rgb(35, 95, 22)") {
             countryFor = "India";
         }
-        if(props.country === "rgb(35, 95, 19)"){
+        if (props.country === "rgb(35, 95, 19)") {
             countryFor = "Brazil";
-        } 
-        
+        }
+
         let [covid, setCovid] = useState([]);
-        
+
         useEffect(() => {
-            if(countryFor){
-            fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-                .then(res => res.json())
-                .then(data => {
-                    setCovid(data.All)
-                    console.log("was inside")
-                })
+            if (countryFor) {
+                fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
+                    .then(res => res.json())
+                    .then(data => {
+                        setCovid(data.All)
+                        console.log("was inside")
+                    })
             }
 
         }, []);
@@ -219,7 +233,7 @@ function Facade() {
             setWriteValue(e)
             console.log(writeValue)
             fetch(countryURL + writeValue, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-                .then(res => res.json())                    
+                .then(res => res.json())
                 .then(data => {
                     console.log(data)
                     setCountry(data)
@@ -235,23 +249,24 @@ function Facade() {
 
                 })
         }, []);
-        if(country.name !== undefined) {
-        return (
-            <div>
-                <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
-                <button onClick={() => handleClick(writeValue)}>Find Country</button>
-                <ul>
-                    <h4>{country.name}</h4>
-                    <li>Capital: {country.capital}</li>
-                    <li>Domain: {country.topLevelDomain}</li>
-                    <li>Region: {country.region}</li>
-                    <li>Sub Region: {country.subregion}</li>
-                    <li>Population: {country.population}</li>
-                    <li>Area: {country.area}</li>
-                </ul>
-            </div>
+        if (country.name !== undefined) {
+            return (
+                <div>
+                    <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
+                    <button onClick={() => handleClick(writeValue)}>Find Country</button>
+                    <ul>
+                        <h4>{country.name}</h4>
+                        <li>Capital: {country.capital}</li>
+                        <li>Domain: {country.topLevelDomain}</li>
+                        <li>Region: {country.region}</li>
+                        <li>Sub Region: {country.subregion}</li>
+                        <li>Population: {country.population}</li>
+                        <li>Area: {country.area}</li>
+                    </ul>
+                </div>
 
-        )} else {
+            )
+        } else {
             return <div>
                 <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
                 <button onClick={() => handleClick(writeValue)}>Find Country</button>
@@ -266,7 +281,7 @@ function Facade() {
         GetCovidByCountry,
         GetWeather,
         GetCountry,
-        GetCovidCountries
+        GetTopCovid
     }
 }
 const MyFacade = Facade();

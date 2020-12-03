@@ -1,4 +1,4 @@
-const URL = "http://localhost:8080/startkodeca3";
+const URL = "https://www.josefsendavid.dk/eksamensys";
  
 function handleHttpErrors(res) {
  if (!res.ok) {

@@ -76,14 +76,14 @@ function HomeWrapper(){
   const [covidArray, setCovidArray] = useState(undefined)
 
   useEffect(() => {
-    fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } })
+    fetch("https://www.josefsendavid.dk/eksamensys/api/covid/all", { headers: { 'Accept': 'application/json' } })
     .then(res => res.json())
     .then(data => {
         setCovidArray(data)
     })
 
     const interval = setInterval(() => {
-        fetch("http://localhost:8080/startkodeca3/api/covid/all", { headers: { 'Accept': 'application/json' } })
+        fetch("https://www.josefsendavid.dk/eksamensys/api/covid/all", { headers: { 'Accept': 'application/json' } })
             .then(res => res.json())
             .then(data => {
                 setCovidArray(data)
@@ -275,9 +275,12 @@ function GetCovidByCountry(props) {
 
 function Covid() {
   let covidData = covidFacade.GetCovid();
+  let covidTop3 = covidFacade.GetTopCovid();
   return (
     <div>
       {covidData}
+      <br/>
+      {covidTop3}
     </div>
   )
 }
