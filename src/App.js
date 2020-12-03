@@ -121,17 +121,25 @@ function Home(props) {
      // { country: "us", value: 13139882 },  // united states
   //  ]
 
-    let data = []
+    let covidarr;
+    let data = [];
     let arr = props.covidArray.Countries;
-    for (let i = 0; i < arr.length; i++) {
-      let temp = {country: arr[i].CountryCode.toLowerCase(), value: arr[i].TotalConfirmed}
-      data.push(temp)
+    if (arr != undefined) {
+      for (let i = 0; i < arr.length; i++) {
+        let temp = {
+          country: arr[i].CountryCode.toLowerCase(),
+          value: arr[i].TotalConfirmed,
+        };
+        data.push(temp);
+      }
+      data.push({ country: "gl", value: 17 });
+
+      covidarr = arr.map((country) => (
+        <li>
+          {country.Country}: {country.TotalConfirmed}
+        </li>
+      ));
     }
-    data.push({country: "gl", value: 17})
-    
-    const covidarr = arr.map((country) => <li>
-      {country.Country}: {country.TotalConfirmed}
-    </li>)
 
     const stylingFunction = (context) => {
       const opacityLevel = 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
@@ -222,6 +230,7 @@ function Home(props) {
                     <div></div>
                   ) : (
                     <div>
+                      
                       <GetCovidByCountry country = {currentCountry}/>
                       {props.covidArray.Countries[0].Country}
                       {covidarr}
@@ -235,7 +244,7 @@ function Home(props) {
       </div>
     </div>
   );
-}
+} 
 
 function GetCovidByCountry(props) {
        

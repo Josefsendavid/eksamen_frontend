@@ -11,7 +11,7 @@ function handleHttpErrors(res) {
 function Facade() {
 
     const GetTopCovid = () => {
-        const [covidTop3, setCovidTop3] = useState([]);
+        const [covidTop3, setCovidTop3] = useState(undefined);
         let temp = []
         function compareNumbers(a, b) {
             return b.TotalConfirmed - a.TotalConfirmed;
@@ -23,9 +23,9 @@ function Facade() {
                 .then(data => {
                     temp = data.Countries;
                     let tempSorted = temp.sort(compareNumbers)
+                    if(temp != []){
                     setCovidTop3(tempSorted)
-                    console.log(covidTop3[0])
-
+                    }
                 })
             const interval = setInterval(() => {
                 fetch(covidURL + "all", { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
@@ -33,13 +33,31 @@ function Facade() {
                     .then(data => {
                         temp = data.Countries;
                         let tempSorted = temp.sort(compareNumbers)
+                        if(temp != []){
                         setCovidTop3(tempSorted)
-                        console.log(covidTop3[0])
+                        }
                     })
             }, 200000)
 
             return () => clearInterval(interval)
         }, []);
+
+        return (
+            <div>
+           { !covidTop3 ? (
+             <div><h3>Loading...</h3></div>
+           ) : (
+             
+             <div>
+               <ul>
+                        <li>{covidTop3[0].Country}, {covidTop3[0].TotalConfirmed}</li>
+                        <li>{covidTop3[1].Country}, {covidTop3[1].TotalConfirmed}</li>
+                        <li>{covidTop3[2].Country}, {covidTop3[2].TotalConfirmed}</li>
+                    </ul>
+             </div>
+           )}
+         </div>);
+
         if (covidTop3.Country !== undefined) {
             return (
                 <div>
@@ -61,8 +79,6 @@ function Facade() {
         const [covidTest, setCovidTest] = useState({});
         const [covidWriteValue, setCovidWriteValue] = useState("");
         let countrySearch = covidWriteValue.charAt(0).toUpperCase() + covidWriteValue.slice(1);
-
-
 
         function handleClick(e) {
             setCovidWriteValue(e)
@@ -135,38 +151,35 @@ function Facade() {
         if (props.country === "rgb(35, 95, 22)") {
             countryFor = "India";
         }
-        if (props.country === "rgb(35, 95, 19)") {
+        if(props.country === "rgb(35, 95, 4)"){
             countryFor = "Brazil";
         }
 
         let [covid, setCovid] = useState([]);
 
         useEffect(() => {
-            if (countryFor) {
-                fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } }, handleHttpErrors)
-                    .then(res => res.json())
-                    .then(data => {
-                        setCovid(data.All)
-                        console.log("was inside")
-                    })
+            if(countryFor){
+            fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } })
+                .then(res => res.json())
+                .then(data => {
+                    setCovid(data.All)
+                })
             }
-
+      
         }, []);
-
+      
         return (
-            <div>
+            <div class="fadeIn first">
                 <ul>
                     <h4>{covid.country}</h4>
                     <li>Confirmed: {covid.confirmed}</li>
                     <li>Recovered: {covid.recovered}</li>
                     <li>Deaths: {covid.deaths}</li>
                     <li>Total population: {covid.population}</li>
-
-                    {countryFor}
                 </ul>
             </div>
         )
-    }
+      }
 
     const GetWeather = () => {
         const [weather, setWeather] = useState([]);
