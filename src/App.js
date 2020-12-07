@@ -411,7 +411,7 @@ function App(props) {
 
       ;
   }
-
+if(loggedIn === false){
   return (
 
     <div class="header">
@@ -437,7 +437,18 @@ function App(props) {
 
     </div>
 
-  )
+  )} else{
+    return (
+      <div class="header">
+        <Router>
+          <Header loggedIn={loggedIn} />
+          <Content covidFacade={props.covidFacade} />
+              <button class="btn btn-default" onClick={logout}>Logout</button>
+        </Router>
+      </div>
+  
+    )
+  }
   //if ({loggedIn}) {
   // return (
   //  <div class="header">
