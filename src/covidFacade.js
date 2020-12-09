@@ -127,7 +127,7 @@ function Facade() {
                         <li>Total population: {covid.population}</li>
                         <br />
                         <br />
-                        <h4>Countries with highest confirmed:</h4>
+                        <h4>Countries with highest confirmed cases:</h4>
                     </ul>
 
                     <div>

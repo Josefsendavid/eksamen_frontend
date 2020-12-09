@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import covidFacade from "./covidFacade";
 import { covidURL, countryURL, weatherURL } from "./settings";
+import logo from './images/syseksamen.png';
 
 
 const Content = (props) => {
@@ -202,7 +203,7 @@ function Home(props) {
 
   return (
     <div>
-      <div className="Main">
+      <div className="wrapper" > 
         <table>
           <tbody>
             <tr>
@@ -325,16 +326,25 @@ const NoMatch = () => {
 }
 
 
-function LogIn({ login }) {
+function LogIn({ login, signup }) {
   const init = { username: "", password: "" };
   const [loginCredentials, setLoginCredentials] = useState(init);
+
 
   const performLogin = (evt) => {
     evt.preventDefault();
     login(loginCredentials.username, loginCredentials.password);
   }
+
+  const performCreate = (evt) => {
+    evt.preventDefault();
+    signup(loginCredentials.username, loginCredentials.password);
+    console.log(loginCredentials)
+  }
+
   const onChange = (evt) => {
     setLoginCredentials({ ...loginCredentials, [evt.target.id]: evt.target.value })
+
   }
 
   return (
@@ -353,46 +363,15 @@ function LogIn({ login }) {
           <div id="formFooter">
             <a class="underlineHover" href="#"><div class="fadeIn fourth"><button class="btn btn-default" onClick={performLogin}>Login</button></div></a>
           </div>
+          <div id="formFooter">
+            <a class="underlineHover" href="#"><div class="fadeIn fourth"><button class="btn btn-default" onClick={performCreate}>Sign up</button></div></a>
+          </div>
         </form>
 
       </div></div>
   )}
 
-  function SignUp({ signup }) {
-    const init = { username: "", password: "" };
-    const [signupCredentials, setSignupCredentials] = useState(init);
-
-    const performCreate = (evt) => {
-      evt.preventDefault();
-      signup(signupCredentials.username, signupCredentials.password);
-      console.log(signupCredentials)
-    }
-    const onChange = (evt) => {
-      setSignupCredentials({ ...signupCredentials, [evt.target.id]: evt.target.value })
-    }
-
-    return (
-      <div>
-        <div id="formContent">
-          <h2>Sign up</h2>
-
-          <form class="fadeIn second" onChange={onChange} >
-            <input placeholder="User Name" class="form-control" id="username" />
-            <br></br>
-            <div class="fadeIn third"><input placeholder="Password" class="form-control" id="password" /></div>
-            <br></br>
-
-            <br></br>
-
-            <div id="formFooter">
-              <a class="underlineHover" href="#"><div class="fadeIn fourth"><button class="btn btn-default" onClick={performCreate}>Sign up</button></div></a>
-            </div>
-          </form>
-
-        </div></div>
-    )
-
-  }
+  
   function LoggedIn() {
     const [dataFromServer, setDataFromServer] = useState("Loading...")
     const [errorMessage, setErrorMessage] = useState("")
@@ -425,7 +404,7 @@ function LogIn({ login }) {
     const signup = (user, pass) => {
       facade.signup(user, pass)
         .then(res => {
-          setLoggedIn(true)
+          setLoggedIn(false)
           console.log(user + pass + " ...Created...")
           setErrorMessage("")
         }).catch((error) => {
@@ -471,23 +450,39 @@ function LogIn({ login }) {
 
             <div class="wrapper">
               {!loggedIn ?
-                (<div><LogIn login={login} />
+                (<div><LogIn login={login} signup={signup} />
                   {errorMessage}</div>) :
-                  (<div><SignUp signup={signup} /></div>)
                 (<div>
                   <LoggedIn />
                   <button class="btn btn-default" onClick={logout}>Logout</button>
 
 
                 </div>)}
+                
 
             </div>
-            <div class="wrapper">
-            <div><SignUp signup={signup} /></div>
-            </div>
+
+            <div className="footer">
+                  <div className="alignleft">
+                  <img src={logo} className="alignright" alt="syseksamen"></img>
+                  <h4>Project developers:</h4> 
+                  <p>Mathias Noe Clausen, cph-mc366</p> 
+                  
+                  <p>David Josefsen, cph-dj154</p> 
+                  <p>Gustav Wernegreen, cph-gw30</p> 
+
+                  
+
+                  </div>
+                  
+
+          </div>
+
+            
           </Router>
 
         </div>
+
 
       )
     } else {
@@ -497,21 +492,28 @@ function LogIn({ login }) {
             <Header loggedIn={loggedIn} />
             <Content covidFacade={props.covidFacade} />
             <button class="btn btn-default" onClick={logout}>Logout</button>
+
+            
+            <div className="footer">
+                  <div className="alignleft">
+                  <img src={logo} className="alignright" alt="syseksamen"></img>
+                  <h4>Project developers:</h4> 
+                  <p>Mathias Noe Clausen, cph-mc366</p> 
+                  
+                  <p>David Josefsen, cph-dj154</p> 
+                  <p>Gustav Wernegreen, cph-gw30</p> 
+
+                  
+
+                  </div>
+                  
+
+          </div>
           </Router>
         </div>
 
       )
     }
-    //if ({loggedIn}) {
-    // return (
-    //  <div class="header">
-    //  <Router>
-    //  <Header/>
-    //  <Content />
-    //  </Router>
-    //  </div>
-    // )
-    //  }
   
   }
 
