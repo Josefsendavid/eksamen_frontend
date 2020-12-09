@@ -1,4 +1,5 @@
 const URL = "https://www.josefsendavid.dk/eksamensys";
+const userURL = "https://www.josefsendavid.dk/eksamensys/api/info/createuser/";
  
 function handleHttpErrors(res) {
  if (!res.ok) {
@@ -38,6 +39,18 @@ const login = (user, password) => {
     });
 };
 
+const signup = (user, password) => {
+  const options = makeOptions("POST", true, {
+    userName: user,
+    userPass: password,
+  });
+  return fetch(userURL, options)
+    .then(handleHttpErrors)
+    .then((res) => {
+      setToken(res.token);
+    });
+}
+
 const fetchData = () => {
     const options = makeOptions("GET", true); //True add's the token
     return fetch(URL + "/api/info/user", options).then(handleHttpErrors);
@@ -66,7 +79,8 @@ const makeOptions= (method,addToken,body) =>{
      loggedIn,
      login,
      logout,
-     fetchData
+     fetchData,
+     signup
  }
 }
 

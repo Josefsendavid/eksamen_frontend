@@ -72,133 +72,133 @@ const Header = ({ loggedIn }) => {
   );
 }
 
-function HomeWrapper(){
+function HomeWrapper() {
   const [covidArray, setCovidArray] = useState(undefined)
 
   useEffect(() => {
     fetch("https://www.josefsendavid.dk/eksamensys/api/covid/all", { headers: { 'Accept': 'application/json' } })
-    .then(res => res.json())
-    .then(data => {
+      .then(res => res.json())
+      .then(data => {
         setCovidArray(data)
-    })
+      })
 
     const interval = setInterval(() => {
-        fetch("https://www.josefsendavid.dk/eksamensys/api/covid/all", { headers: { 'Accept': 'application/json' } })
-            .then(res => res.json())
-            .then(data => {
-                setCovidArray(data)
-            })
+      fetch("https://www.josefsendavid.dk/eksamensys/api/covid/all", { headers: { 'Accept': 'application/json' } })
+        .then(res => res.json())
+        .then(data => {
+          setCovidArray(data)
+        })
     }, 200000)
 
     return () => clearInterval(interval)
-}, []);
-    
-    return (
-     <div>
-    { !covidArray ? (
-      <div><h2>Loading...</h2></div>
-    ) : (
-      
-      <div>
-        <Home covidArray = {covidArray}/>
-      </div>
-    )}
-  </div>);
+  }, []);
+
+  return (
+    <div>
+      { !covidArray ? (
+        <div><h2>Loading...</h2></div>
+      ) : (
+
+          <div>
+            <Home covidArray={covidArray} />
+          </div>
+        )}
+    </div>);
 }
 
 function Home(props) {
   const [currentCountry, setCurrentCountry] = useState("")
   const history = useHistory();
- 
-  useEffect(() => {
-}, []);
 
-  
+  useEffect(() => {
+  }, []);
+
+
   //const data =
-   // [
-     // { country: "cn", value: 86490 }, // china
-     // { country: "in", value: 9266705 }, // india
-     // { country: "us", value: 13139882 },  // united states
+  // [
+  // { country: "cn", value: 86490 }, // china
+  // { country: "in", value: 9266705 }, // india
+  // { country: "us", value: 13139882 },  // united states
   //  ]
 
-    let covidarr;
-    let data = [];
-    let arr = props.covidArray.Countries;
-    if (arr != undefined) {
-      for (let i = 0; i < arr.length; i++) {
-        let temp = {
-          country: arr[i].CountryCode.toLowerCase(),
-          value: arr[i].TotalConfirmed,
-        };
-        data.push(temp);
-      }
-      data.push({ country: "gl", value: 17 });
-
-      covidarr = arr.map((country) => (
-        <li>
-          {country.Country}: {country.TotalConfirmed}
-        </li>
-      ));
+  let covidarr;
+  let data = [];
+  let arr = props.covidArray.Countries;
+  if (arr != undefined) {
+    for (let i = 0; i < arr.length; i++) {
+      let temp = {
+        country: arr[i].CountryCode.toLowerCase(),
+        value: arr[i].TotalConfirmed,
+      };
+      data.push(temp);
     }
+    data.push({ country: "gl", value: 17 });
 
-    const stylingFunction = (context) => {
-      const opacityLevel = 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
+    covidarr = arr.map((country) => (
+      <li>
+        {country.Country}: {country.TotalConfirmed}
+      </li>
+    ));
+  }
 
-      return {
-        fill: 
-        context.country === "US" ? "#235f17" : context.color 
-        && context.country === "IN" ? "#235f16" : context.color
-        && context.country === "CN" ? "#235f15" : context.color
-        && context.country === "ID" ? "#235f14" : context.color
-        && context.country === "PK" ? "#235f13" : context.color
-        && context.country === "NG" ? "#235f12" : context.color
-        && context.country === "RU" ? "#235f11" : context.color
-        && context.country === "DK" ? "#235f09" : context.color
-        && context.country === "CA" ? "#235f08" : context.color
-        && context.country === "MX" ? "#235f07" : context.color
-        && context.country === "GL" ? "#235f06" : context.color
-        && context.country === "DE" ? "#235f05" : context.color
+  const stylingFunction = (context) => {
+    const opacityLevel = 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
 
-        && context.country === "AF" ? "#235f05" : context.color
-        && context.country === "AL" ? "#235f05" : context.color
-        && context.country === "DZ" ? "#235f05" : context.color
-        && context.country === "AD" ? "#235f05" : context.color
-        && context.country === "AO" ? "#235f05" : context.color
-        && context.country === "AG" ? "#235f05" : context.color
-        && context.country === "AR" ? "#235f05" : context.color
-        && context.country === "AM" ? "#235f05" : context.color
-        && context.country === "AU" ? "#235f05" : context.color
-        && context.country === "AT" ? "#235f05" : context.color
-        && context.country === "AZ" ? "#235f05" : context.color
-        && context.country === "BS" ? "#235f05" : context.color
-        && context.country === "BH" ? "#235f05" : context.color
-        && context.country === "BD" ? "#235f05" : context.color
-        && context.country === "BB" ? "#235f05" : context.color
-        && context.country === "BY" ? "#235f05" : context.color
-        && context.country === "BE" ? "#235f05" : context.color
-        && context.country === "BZ" ? "#235f05" : context.color
-        && context.country === "BJ" ? "#235f05" : context.color
-        && context.country === "BT" ? "#235f05" : context.color
-        && context.country === "BO" ? "#235f05" : context.color
-        && context.country === "BA" ? "#235f05" : context.color
-        && context.country === "BW" ? "#235f05" : context.color
-        && context.country === "BN" ? "#235f05" : context.color
-        && context.country === "BG" ? "#235f05" : context.color
-        && context.country === "BF" ? "#235f05" : context.color
-        && context.country === "BI" ? "#235f05" : context.color
-        && context.country === "KH" ? "#235f05" : context.color
-        && context.country === "CM" ? "#235f05" : context.color
-        && context.country === "CA" ? "#235f05" : context.color
-        && context.country === "CV" ? "#235f05" : context.color
-        && context.country === "BR" ? "#235f04" : context.color,
-        
-        fillOpacity: opacityLevel, 
-        stroke: "grey", 
-        strokeWidth: 1, 
-        strokeOpacity: 0.5, 
-        cursor: "pointer" 
-           }
+    return {
+      fill:
+        context.country === "US" ? "#235f17" : context.color
+          && context.country === "IN" ? "#235f16" : context.color
+            && context.country === "CN" ? "#235f15" : context.color
+              && context.country === "ID" ? "#235f14" : context.color
+                && context.country === "PK" ? "#235f13" : context.color
+                  && context.country === "NG" ? "#235f12" : context.color
+                    && context.country === "RU" ? "#235f11" : context.color
+                      && context.country === "DK" ? "#235f09" : context.color
+                        && context.country === "CA" ? "#235f08" : context.color
+                          && context.country === "MX" ? "#235f07" : context.color
+                            && context.country === "GL" ? "#235f06" : context.color
+                              && context.country === "DE" ? "#235f05" : context.color
+
+                                && context.country === "AF" ? "#235f05" : context.color
+                                  && context.country === "AL" ? "#235f05" : context.color
+                                    && context.country === "DZ" ? "#235f05" : context.color
+                                      && context.country === "AD" ? "#235f05" : context.color
+                                        && context.country === "AO" ? "#235f05" : context.color
+                                          && context.country === "AG" ? "#235f05" : context.color
+                                            && context.country === "AR" ? "#235f05" : context.color
+                                              && context.country === "AM" ? "#235f05" : context.color
+                                                && context.country === "AU" ? "#235f05" : context.color
+                                                  && context.country === "AT" ? "#235f05" : context.color
+                                                    && context.country === "AZ" ? "#235f05" : context.color
+                                                      && context.country === "BS" ? "#235f05" : context.color
+                                                        && context.country === "BH" ? "#235f05" : context.color
+                                                          && context.country === "BD" ? "#235f05" : context.color
+                                                            && context.country === "BB" ? "#235f05" : context.color
+                                                              && context.country === "BY" ? "#235f05" : context.color
+                                                                && context.country === "BE" ? "#235f05" : context.color
+                                                                  && context.country === "BZ" ? "#235f05" : context.color
+                                                                    && context.country === "BJ" ? "#235f05" : context.color
+                                                                      && context.country === "BT" ? "#235f05" : context.color
+                                                                        && context.country === "BO" ? "#235f05" : context.color
+                                                                          && context.country === "BA" ? "#235f05" : context.color
+                                                                            && context.country === "BW" ? "#235f05" : context.color
+                                                                              && context.country === "BN" ? "#235f05" : context.color
+                                                                                && context.country === "BG" ? "#235f05" : context.color
+                                                                                  && context.country === "BF" ? "#235f05" : context.color
+                                                                                    && context.country === "BI" ? "#235f05" : context.color
+                                                                                      && context.country === "KH" ? "#235f05" : context.color
+                                                                                        && context.country === "CM" ? "#235f05" : context.color
+                                                                                          && context.country === "CA" ? "#235f05" : context.color
+                                                                                            && context.country === "CV" ? "#235f05" : context.color
+                                                                                              && context.country === "BR" ? "#235f04" : context.color,
+
+      fillOpacity: opacityLevel,
+      stroke: "grey",
+      strokeWidth: 1,
+      strokeOpacity: 0.5,
+      cursor: "pointer"
     }
+  }
 
   return (
     <div>
@@ -217,25 +217,25 @@ function Home(props) {
                   }}
                 >
                   <div class="fadeIn first">
-                  <WorldMap
-                    color={"black"}
-                    tooltipBgColor={"#D3D3D3"}
-                    valueSuffix="cases"
-                    size="xl"
-                    data={data}
-                    styleFunction={stylingFunction}
-                  />
+                    <WorldMap
+                      color={"black"}
+                      tooltipBgColor={"#D3D3D3"}
+                      valueSuffix="cases"
+                      size="xl"
+                      data={data}
+                      styleFunction={stylingFunction}
+                    />
                   </div>
                   {!currentCountry ? (
                     <div></div>
                   ) : (
-                    <div>
-                      
-                      <GetCovidByCountry country = {currentCountry}/>
-                      {props.covidArray.Countries[0].Country}
-                      {covidarr}
-                    </div>
-                  )}
+                      <div>
+
+                        <GetCovidByCountry country={currentCountry} />
+                        {props.covidArray.Countries[0].Country}
+                        {covidarr}
+                      </div>
+                    )}
                 </div>
               </td>
             </tr>
@@ -244,41 +244,41 @@ function Home(props) {
       </div>
     </div>
   );
-} 
+}
 
 function GetCovidByCountry(props) {
-       
+
   let countryFor;
-  if(props.country === "rgb(35, 95, 22)"){
-      countryFor = "India";
+  if (props.country === "rgb(35, 95, 22)") {
+    countryFor = "India";
   }
-  if(props.country === "rgb(35, 95, 4)"){
-      countryFor = "Brazil";
-  } 
-  
+  if (props.country === "rgb(35, 95, 4)") {
+    countryFor = "Brazil";
+  }
+
   let [covid, setCovid] = useState([]);
-  
+
   useEffect(() => {
-      if(countryFor){
+    if (countryFor) {
       fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } })
-          .then(res => res.json())
-          .then(data => {
-              setCovid(data.All)
-          })
-      }
+        .then(res => res.json())
+        .then(data => {
+          setCovid(data.All)
+        })
+    }
 
   }, []);
 
   return (
-      <div class="fadeIn first">
-          <ul>
-              <h4>{covid.country}</h4>
-              <li>Confirmed: {covid.confirmed}</li>
-              <li>Recovered: {covid.recovered}</li>
-              <li>Deaths: {covid.deaths}</li>
-              <li>Total population: {covid.population}</li>
-          </ul>
-      </div>
+    <div class="fadeIn first">
+      <ul>
+        <h4>{covid.country}</h4>
+        <li>Confirmed: {covid.confirmed}</li>
+        <li>Recovered: {covid.recovered}</li>
+        <li>Deaths: {covid.deaths}</li>
+        <li>Total population: {covid.population}</li>
+      </ul>
+    </div>
   )
 }
 
@@ -288,7 +288,7 @@ function Covid() {
   return (
     <div>
       {covidData}
-      <br/>
+      <br />
       {covidTop3}
     </div>
   )
@@ -306,7 +306,7 @@ function Weather() {
 function Country() {
   let countryData = covidFacade.GetCountry();
   return (
-    <div> 
+    <div>
       {countryData}
     </div>
   )
@@ -356,110 +356,163 @@ function LogIn({ login }) {
         </form>
 
       </div></div>
-  )
+  )}
 
-}
-function LoggedIn() {
-  const [dataFromServer, setDataFromServer] = useState("Loading...")
-  const [errorMessage, setErrorMessage] = useState("")
+  function SignUp({ signup }) {
+    const init = { username: "", password: "" };
+    const [signupCredentials, setSignupCredentials] = useState(init);
 
-  useEffect(() => {
-    facade.fetchData().then(data => setDataFromServer(data.msg))
-      .catch((error) => {
-        error.fullError.then((err) => {
-          setErrorMessage(err.message)
-          console.log("error:" + err)
-        })
-      })
-  }, [])
+    const performCreate = (evt) => {
+      evt.preventDefault();
+      signup(signupCredentials.username, signupCredentials.password);
+      console.log(signupCredentials)
+    }
+    const onChange = (evt) => {
+      setSignupCredentials({ ...signupCredentials, [evt.target.id]: evt.target.value })
+    }
 
-  return (
-    <div>
-      <h2>Data Received from server</h2>
-      <h3>{dataFromServer}</h3>
-      {errorMessage}
-    </div>
-  )
+    return (
+      <div>
+        <div id="formContent">
+          <h2>Sign up</h2>
 
-}
+          <form class="fadeIn second" onChange={onChange} >
+            <input placeholder="User Name" class="form-control" id="username" />
+            <br></br>
+            <div class="fadeIn third"><input placeholder="Password" class="form-control" id="password" /></div>
+            <br></br>
 
-function App(props) {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
-  const history = useHistory();
+            <br></br>
 
+            <div id="formFooter">
+              <a class="underlineHover" href="#"><div class="fadeIn fourth"><button class="btn btn-default" onClick={performCreate}>Sign up</button></div></a>
+            </div>
+          </form>
 
-  const logout = () => {
-    facade.logout()
-    setLoggedIn(false)
-    history.push("/")
-    history.go(0);
+        </div></div>
+    )
+
   }
-  const login = (user, pass) => {
-    facade.login(user, pass)
-      .then(res => {
-        setLoggedIn(true)
-        setErrorMessage("")
-      }).catch((error) => {
-        error.fullError.then((err) => {
-          setErrorMessage(err.message)
-          console.log("error: " + err)
+  function LoggedIn() {
+    const [dataFromServer, setDataFromServer] = useState("Loading...")
+    const [errorMessage, setErrorMessage] = useState("")
 
+    useEffect(() => {
+      facade.fetchData().then(data => setDataFromServer(data.msg))
+        .catch((error) => {
+          error.fullError.then((err) => {
+            setErrorMessage(err.message)
+            console.log("error:" + err)
+          })
         })
-      })
+    }, [])
 
+    return (
+      <div>
+        <h2>Data Received from server</h2>
+        <h3>{dataFromServer}</h3>
+        {errorMessage}
+      </div>
+    )
 
-      ;
   }
-if(loggedIn === false){
-  return (
 
-    <div class="header">
+  function App(props) {
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+    const history = useHistory();
 
-      <Router>
-        <Header loggedIn={loggedIn} />
-        <Content covidFacade={props.covidFacade} />
+    const signup = (user, pass) => {
+      facade.signup(user, pass)
+        .then(res => {
+          setLoggedIn(true)
+          console.log(user + pass + " ...Created...")
+          setErrorMessage("")
+        }).catch((error) => {
+          error.fullError.then((err) => {
+            setErrorMessage(err.message)
+            console.log("error: " + err)
+
+            })
+        })
+    }
+
+    const logout = () => {
+      facade.logout()
+      setLoggedIn(false)
+      history.push("/")
+      history.go(0);
+    }
+    const login = (user, pass) => {
+      facade.login(user, pass)
+        .then(res => {
+          setLoggedIn(true)
+          setErrorMessage("")
+        }).catch((error) => {
+          error.fullError.then((err) => {
+            setErrorMessage(err.message)
+            console.log("error: " + err)
+
+          })
+        })
 
 
-        <div class="wrapper">
-          {!loggedIn ?
-            (<div><LogIn login={login} />
-              {errorMessage}</div>) :
-            (<div>
-              <LoggedIn />
-              <button class="btn btn-default" onClick={logout}>Logout</button>
+        ;
+    }
+    if (loggedIn === false) {
+      return (
+
+        <div class="header">
+
+          <Router>
+            <Header loggedIn={loggedIn} />
+            <Content covidFacade={props.covidFacade} />
 
 
-            </div>)}
+            <div class="wrapper">
+              {!loggedIn ?
+                (<div><LogIn login={login} />
+                  {errorMessage}</div>) :
+                  (<div><SignUp signup={signup} /></div>)
+                (<div>
+                  <LoggedIn />
+                  <button class="btn btn-default" onClick={logout}>Logout</button>
+
+
+                </div>)}
+
+            </div>
+            <div class="wrapper">
+            <div><SignUp signup={signup} /></div>
+            </div>
+          </Router>
 
         </div>
-      </Router>
 
-    </div>
+      )
+    } else {
+      return (
+        <div class="header">
+          <Router>
+            <Header loggedIn={loggedIn} />
+            <Content covidFacade={props.covidFacade} />
+            <button class="btn btn-default" onClick={logout}>Logout</button>
+          </Router>
+        </div>
 
-  )} else{
-    return (
-      <div class="header">
-        <Router>
-          <Header loggedIn={loggedIn} />
-          <Content covidFacade={props.covidFacade} />
-              <button class="btn btn-default" onClick={logout}>Logout</button>
-        </Router>
-      </div>
+      )
+    }
+    //if ({loggedIn}) {
+    // return (
+    //  <div class="header">
+    //  <Router>
+    //  <Header/>
+    //  <Content />
+    //  </Router>
+    //  </div>
+    // )
+    //  }
   
-    )
   }
-  //if ({loggedIn}) {
-  // return (
-  //  <div class="header">
-  //  <Router>
-  //  <Header/>
-  //  <Content />
-  //  </Router>
-  //  </div>
-  // )
-  //  }
 
-}
-
-export default App;
+  export default App;
