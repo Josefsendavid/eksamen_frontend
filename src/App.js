@@ -325,7 +325,7 @@ function GetCovidByCountry(props) {
               Total incidents per 100,000: {totalIncidentsPerPop}<br></br>
               Current incidence: {incidence}.<br></br><br></br>
               
-              This mean that the current risk of travelling to {covid.country} is {threat}.
+              This means that the current risk of travelling to {covid.country} is {threat}.
           </ul>
       </div>
     
