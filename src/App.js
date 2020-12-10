@@ -109,6 +109,7 @@ function HomeWrapper() {
 
 function Home(props) {
   const [currentCountry, setCurrentCountry] = useState("")
+  const [incidenceData, setIncidenceData] = useState(undefined);
   const history = useHistory();
 
   useEffect(() => {
@@ -140,6 +141,54 @@ function Home(props) {
         {country.Country}: {country.TotalConfirmed}
       </li>
     ));
+  }
+
+  if(data){
+    console.log(data)
+  }
+
+  function viewMapWithTotalIncidents(){
+    if(data){
+      for(var i = 0; i < data.size; i++){
+
+      }
+    }
+  }
+
+  function viewMapWithIncidence(){
+    //PÅ VEJ
+
+    
+  //   let arr = props.covidArray.Countries;
+  //   let data = []
+  //       if (arr != undefined) {
+  //          for (let i = 0; i < arr.length; i++) {
+  //            let temp = {
+  //             country: arr[i].CountryCode.toLowerCase(),
+  //             value: arr[i].TotalConfirmed,
+  //             };
+  //         data.push(temp);
+  //       }
+  //   data.push({ country: "gl", value: 17 });
+
+  // let temp = 0;
+  // let totalIncidentsPerPop = 0;
+  // let incidence = 0;
+  // if (incidenceData && countryFor) {
+  //   for (var i = 0; i < incidenceData.Countries.length; i++) {
+  //     if (incidenceData.Countries[i].Country === countryFor) {
+  //       temp = incidenceData.Countries[i].NewConfirmed;
+  //     }
+  //   }
+  // }
+  // totalIncidentsPerPop = Math.round(
+  //   covid.confirmed / (country.population / 100000)
+  // );
+  // incidence = Math.round(
+  //   temp / (country.population / 100000)
+  // );
+
+  //   }
   }
 
   const stylingFunction = (context) => {
@@ -211,32 +260,28 @@ function Home(props) {
                 <div
                   className="row"
                   onClick={(e) => {
-                    setCurrentCountry("");
                     setCurrentCountry(e.target.style.fill);
                     console.log(currentCountry)
                     console.log(e.target)
                   }}
                 >
                   <div class="fadeIn first">
-                    <WorldMap
-                      color={"black"}
-                      tooltipBgColor={"#D3D3D3"}
-                      valueSuffix="cases"
-                      size="xl"
-                      data={data}
-                      styleFunction={stylingFunction}
-                    />
+                  <WorldMap
+                    color={"#235f05"}
+                    tooltipBgColor={"#D3D3D3"}
+                    valueSuffix="cases"
+                    size="xl"
+                    data={data}
+                    styleFunction={stylingFunction}
+                  />
                   </div>
                   {!currentCountry ? (
                     <div></div>
                   ) : (
-                      <div>
-
-                        <GetCovidByCountry country={currentCountry} />
-                        {props.covidArray.Countries[0].Country}
-                        {covidarr}
-                      </div>
-                    )}
+                    <div>
+                      <GetCovidByCountry country = {currentCountry}/>
+                    </div>
+                  )}
                 </div>
               </td>
             </tr>
@@ -250,37 +295,87 @@ function Home(props) {
 function GetCovidByCountry(props) {
 
   let countryFor;
-  if (props.country === "rgb(35, 95, 22)") {
-    countryFor = "India";
-  }
-  if (props.country === "rgb(35, 95, 4)") {
-    countryFor = "Brazil";
-  }
 
-  let [covid, setCovid] = useState([]);
-
+  if(props.country === "rgb(35, 95, 22)"){
+      countryFor = "India";
+  }
+  if(props.country === "rgb(35, 95, 4)"){
+      countryFor = "Brazil";
+  }
+  if(props.country === "rgb(35, 95, 9)"){
+      countryFor = "Denmark";
+  }
+   
+  
+  const [covid, setCovid] = useState([]);
+  const [country, setCountryData] = useState([]);
+  const [incidenceData, setIncidenceData] = useState(undefined);
+  
   useEffect(() => {
     if (countryFor) {
       fetch(covidURL + countryFor, { headers: { 'Accept': 'application/json' } })
-        .then(res => res.json())
-        .then(data => {
-          setCovid(data.All)
-        })
-    }
+          .then(res => res.json())
+          .then(data => {
+              setCovid(data.All)
+          })
+
+      fetch(countryURL + countryFor, { headers: { 'Accept': 'application/json' } })
+          .then(res => res.json())
+          .then(data => {
+              setCountryData(data)
+          })
+      
+          fetch("https://api.covid19api.com/summary", { headers: { 'Accept': 'application/json' } })
+          .then(res => res.json())
+          .then(data => {
+              setIncidenceData(data)
+          })
+      }
 
   }, []);
 
+  let temp = 0;
+  let totalIncidentsPerPop = 0;
+  let incidence = 0;
+  if (incidenceData && countryFor) {
+    for (var i = 0; i < incidenceData.Countries.length; i++) {
+      if (incidenceData.Countries[i].Country === countryFor) {
+        temp = incidenceData.Countries[i].NewConfirmed;
+      }
+    }
+  }
+  totalIncidentsPerPop = Math.round(
+    covid.confirmed / (country.population / 100000)
+  );
+  incidence = Math.round(
+    temp / (country.population / 100000)
+  );
+  
+  let threat;
+  if(incidence){
+    incidence < 10 ? threat = "low" : (incidence < 30 ? threat = "medium" : threat = "high")
+    console.log(threat)
+  }
+  
+
+  if(totalIncidentsPerPop != undefined && incidence != undefined && threat != undefined){
   return (
-    <div class="fadeIn first">
-      <ul>
-        <h4>{covid.country}</h4>
-        <li>Confirmed: {covid.confirmed}</li>
-        <li>Recovered: {covid.recovered}</li>
-        <li>Deaths: {covid.deaths}</li>
-        <li>Total population: {covid.population}</li>
-      </ul>
-    </div>
-  )
+      <div class="fadeIn first">
+          <ul>
+              <h4>{covid.country}</h4>
+              Confirmed: {covid.confirmed}<br></br>
+              Recovered: {covid.recovered}<br></br>
+              Deaths: {covid.deaths}<br></br>
+              Total population: {covid.population}<br></br>
+              Population: {country.population}<br></br><br></br>
+
+              Total incidents per 100,000: {totalIncidentsPerPop}<br></br>
+              Current incidence: {incidence}.<br></br><br></br>
+              
+              This mean that the current risk of travelling to {covid.country} is {threat}.
+          </ul>
+      </div>
+  )}
 }
 
 function Covid() {

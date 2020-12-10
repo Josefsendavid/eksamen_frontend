@@ -58,20 +58,6 @@ function Facade() {
            )}
          </div>);
 
-        if (covidTop3.Country !== undefined) {
-            return (
-                <div>
-                    <h4>Top 3</h4>
-                    <ul>
-                        <li>{covidTop3[0]}</li>
-                    </ul>
-                </div>
-            )
-        }
-        return (
-            <p>Waiting for data...</p>
-        )
-
     }
 
     const GetCovid = () => {
