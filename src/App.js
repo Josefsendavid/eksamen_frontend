@@ -109,7 +109,6 @@ function HomeWrapper() {
 
 function Home(props) {
   const [currentCountry, setCurrentCountry] = useState("")
-  const [incidenceData, setIncidenceData] = useState(undefined);
   const history = useHistory();
 
   useEffect(() => {
@@ -141,54 +140,6 @@ function Home(props) {
         {country.Country}: {country.TotalConfirmed}
       </li>
     ));
-  }
-
-  if(data){
-    console.log(data)
-  }
-
-  function viewMapWithTotalIncidents(){
-    if(data){
-      for(var i = 0; i < data.size; i++){
-
-      }
-    }
-  }
-
-  function viewMapWithIncidence(){
-    //PÅ VEJ
-
-    
-  //   let arr = props.covidArray.Countries;
-  //   let data = []
-  //       if (arr != undefined) {
-  //          for (let i = 0; i < arr.length; i++) {
-  //            let temp = {
-  //             country: arr[i].CountryCode.toLowerCase(),
-  //             value: arr[i].TotalConfirmed,
-  //             };
-  //         data.push(temp);
-  //       }
-  //   data.push({ country: "gl", value: 17 });
-
-  // let temp = 0;
-  // let totalIncidentsPerPop = 0;
-  // let incidence = 0;
-  // if (incidenceData && countryFor) {
-  //   for (var i = 0; i < incidenceData.Countries.length; i++) {
-  //     if (incidenceData.Countries[i].Country === countryFor) {
-  //       temp = incidenceData.Countries[i].NewConfirmed;
-  //     }
-  //   }
-  // }
-  // totalIncidentsPerPop = Math.round(
-  //   covid.confirmed / (country.population / 100000)
-  // );
-  // incidence = Math.round(
-  //   temp / (country.population / 100000)
-  // );
-
-  //   }
   }
 
   const stylingFunction = (context) => {
@@ -375,7 +326,10 @@ function GetCovidByCountry(props) {
               This mean that the current risk of travelling to {covid.country} is {threat}.
           </ul>
       </div>
+    
   )}
+
+  return (<div>Waiting...</div>)
 }
 
 function Covid() {
