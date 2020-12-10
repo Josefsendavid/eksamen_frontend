@@ -295,13 +295,14 @@ function GetCovidByCountry(props) {
       }
     }
   }
+  if(covid &&  country){
   totalIncidentsPerPop = Math.round(
     covid.confirmed / (country.population / 100000)
   );
   incidence = Math.round(
     temp / (country.population / 100000)
   );
-  
+  }
   let threat;
   if(incidence){
     incidence < 10 ? threat = "low" : (incidence < 30 ? threat = "medium" : threat = "high")
@@ -313,6 +314,7 @@ function GetCovidByCountry(props) {
   return (
       <div class="fadeIn first">
           <ul>
+              <br></br><br></br><br></br><br></br>
               <h4>{covid.country}</h4>
               Confirmed: {covid.confirmed}<br></br>
               Recovered: {covid.recovered}<br></br>
@@ -329,7 +331,7 @@ function GetCovidByCountry(props) {
     
   )}
 
-  return (<div>Waiting...</div>)
+  return (<div>Loading...</div>)
 }
 
 function Covid() {
