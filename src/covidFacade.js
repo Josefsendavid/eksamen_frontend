@@ -213,6 +213,11 @@ function Facade() {
                         <li>Temperature min: {Math.round(weather.main.temp_min)}</li>
                         <li>Temperature max: {Math.round(weather.main.temp_max)}</li>
                     </ul>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
                 </div>
 
             );
@@ -221,6 +226,17 @@ function Facade() {
             <input type="text" id="myInput" placeholder="Insert Country" value={weatherWriteValue} onChange={(event) => setWeatherWriteValue(event.target.value)} />
             <button onClick={() => handleClick(weatherWriteValue)}>See weather</button>
             <p>Unknown capital...</p>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
         </div>);
     }
 
@@ -262,6 +278,10 @@ function Facade() {
                         <li>Population: {country.population}</li>
                         <li>Area: {country.area}</li>
                     </ul>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
                 </div>
 
             )
@@ -270,6 +290,17 @@ function Facade() {
                 <input type="text" id="myInput" placeholder="Insert Country" value={writeValue} onChange={(event) => setWriteValue(event.target.value)} />
                 <button onClick={() => handleClick(writeValue)}>Find Country</button>
                 <p>Unknown Country... </p>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
             </div>
 
         }

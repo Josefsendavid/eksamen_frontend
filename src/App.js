@@ -230,6 +230,9 @@ function Home(props) {
                     <div></div>
                   ) : (
                     <div>
+                      <br></br>
+                      <br></br>
+                      <br></br>
                       <GetCovidByCountry country = {currentCountry}/>
                     </div>
                   )}
@@ -312,9 +315,8 @@ function GetCovidByCountry(props) {
 
   if(totalIncidentsPerPop != undefined && incidence != undefined && threat != undefined){
   return (
-      <div class="fadeIn first">
+      <div class="fadeIn first" className="log_output">
           <ul>
-              <br></br><br></br><br></br><br></br>
               <h4>{covid.country}</h4>
               Confirmed: {covid.confirmed}<br></br>
               Recovered: {covid.recovered}<br></br>
