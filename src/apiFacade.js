@@ -1,5 +1,5 @@
-const URL = "https://www.josefsendavid.dk/eksamensys";
-const userURL = "https://www.josefsendavid.dk/eksamensys/api/info/createuser/";
+const URL = "http://localhost:8080/startkodeca3";
+const userURL = "http://localhost:8080/startkodeca3/api/info/createuser/";
  
 function handleHttpErrors(res) {
  if (!res.ok) {

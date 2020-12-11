@@ -408,7 +408,7 @@ function LogIn({ login, signup }) {
         <form class="fadeIn second" onChange={onChange} >
           <input placeholder="User Name" class="form-control" id="username" />
           <br></br>
-          <div class="fadeIn third"><input placeholder="Password" class="form-control" id="password" /></div>
+          <div class="fadeIn third"><input placeholder="Password" class="form-control" id="password" type="password"/></div>
           <br></br>
 
           <br></br>
