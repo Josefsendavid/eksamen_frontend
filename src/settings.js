@@ -1,4 +1,4 @@
-export const mainURL = "http://localhost:8080/startkodeca3/eksamensys/";
-export const weatherURL = "http://localhost:8080/startkodeca3/api/weather/weatherDTO/";
-export const countryURL = "http://localhost:8080/startkodeca3/api/country/";
-export const covidURL = "http://localhost:8080/startkodeca3/api/covid/";
+export const mainURL = "https://www.josefsendavid.dk/eksamensys/";
+export const weatherURL = "https://www.josefsendavid.dk/eksamensys/api/weather/weatherDTO/";
+export const countryURL = "https://www.josefsendavid.dk/eksamensys/api/country/";
+export const covidURL = "https://www.josefsendavid.dk/eksamensys/api/covid/";
